@@ -1,7 +1,4 @@
-#[macro_use]
-extern crate failure;
-extern crate num_bigint;
-
+use failure::Fail;
 use num_bigint::{BigUint, ToBigUint};
 use num_traits::pow::Pow;
 use std::fmt;
@@ -38,7 +35,6 @@ macro_rules! pow_disit {
         $buf4 = 0;
     }};
 }
-
 
 /// 漢数字で書かれた文字列 `String` を `BigUInt` に変換する
 ///
