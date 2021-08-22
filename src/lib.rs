@@ -45,11 +45,11 @@ macro_rules! pow_disit {
 /// use kanji_number_parser::{parse, KanjiNumberParseError};
 ///
 /// assert_eq!(
-///    parse(String::from("一億五千万")),
+///    parse("一億五千万"),
 ///    Ok(150000000.to_biguint().unwrap()) as Result<BigUint, KanjiNumberParseError>
 /// );
 /// ```
-pub fn parse(s: String) -> Result<BigUint, KanjiNumberParseError> {
+pub fn parse(s: &str) -> Result<BigUint, KanjiNumberParseError> {
     let mut buf = 0.to_biguint().unwrap();
     let mut buf1 = 0;
     let mut buf4 = 0;
@@ -224,39 +224,39 @@ mod tests {
     use super::*;
     #[test]
     fn parse_works() {
-        assert_eq!(parse(String::from("零")), Ok(0.to_biguint().unwrap()));
+        assert_eq!(parse("零"), Ok(0.to_biguint().unwrap()));
         assert_eq!(
-            parse(String::from("千百十")),
+            parse("千百十"),
             Ok(1110.to_biguint().unwrap()) as Result<BigUint, KanjiNumberParseError>
         );
         assert_eq!(
-            parse(String::from("一千万")),
+            parse("一千万"),
             Ok(10000000.to_biguint().unwrap()) as Result<BigUint, KanjiNumberParseError>
         );
         assert_eq!(
-            parse(String::from("四千三百二十一")),
+            parse("四千三百二十一"),
             Ok(4321.to_biguint().unwrap()) as Result<BigUint, KanjiNumberParseError>
         );
         assert_eq!(
-            parse(String::from("五千三十")),
+            parse("五千三十"),
             Ok(5030.to_biguint().unwrap()) as Result<BigUint, KanjiNumberParseError>
         );
         assert_eq!(
-            parse(String::from("一億五千万")),
+            parse("一億五千万"),
             Ok(150000000.to_biguint().unwrap()) as Result<BigUint, KanjiNumberParseError>
         );
         assert_eq!(
-            parse(String::from("一億五千万")),
+            parse("一億五千万"),
             Ok(BigUint::from_radix_be(&vec![1, 50, 0, 0, 0], 100).unwrap())
                 as Result<BigUint, KanjiNumberParseError>
         );
         assert_eq!(
-            parse(String::from("一兆五千億")),
+            parse("一兆五千億"),
             Ok(BigUint::from_radix_be(&vec![1, 50, 0, 0, 0, 0, 0], 100).unwrap())
                 as Result<BigUint, KanjiNumberParseError>
         );
         assert_eq!(
-            parse(String::from("五千六百七十八溝九千十二穣三千四百五十六𥝱七千八百九十垓千二百三十四京五千六百七十八兆九千十二億三千四百五十六万七千八百九十")),
+            parse("五千六百七十八溝九千十二穣三千四百五十六𥝱七千八百九十垓千二百三十四京五千六百七十八兆九千十二億三千四百五十六万七千八百九十"),
             Ok(BigUint::from_radix_be(&vec![
                 56,78, // 32:溝
                 90,12, // 28:穣
@@ -270,7 +270,7 @@ mod tests {
                 ], 100).unwrap()) as Result<BigUint, KanjiNumberParseError>
         );
         assert_eq!(
-            parse(String::from("十二無量大数三千四百五十六不可思議七千八百九十那由他千二百三十四阿僧祇五千六百七十八恒河沙")),
+            parse("十二無量大数三千四百五十六不可思議七千八百九十那由他千二百三十四阿僧祇五千六百七十八恒河沙"),
             Ok(BigUint::from_radix_be(&vec![
                    12, // 68:無量大数
                 34,56, // 64:不可思議
@@ -293,7 +293,7 @@ mod tests {
                 ], 100).unwrap()) as Result<BigUint, KanjiNumberParseError>
         );
         assert_eq!(
-            parse(String::from("数ではない")),
+            parse("数ではない"),
             Err(KanjiNumberParseError)
         )
     }
